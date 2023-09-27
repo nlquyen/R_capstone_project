@@ -43,4 +43,27 @@ df4 <- read.csv("https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cl
 sqlSave(conn,df4, "WORLD_CITIES", append=TRUE, fast=FALSE, rownames=FALSE, colnames=FALSE, verbose=FALSE)
 WORLD_CITIES_db <- sqlFetch(conn, "WORLD_CITIES")
 
+#task 10
+# Solution 10 join across the WORLD_CITIES and the BIKE_SHARING_SYSTEMS
+query10 <- "SELECT WORLD_CITIES.CITY_ASCII, 
+                BIKE_SHARING_SYSTEMS.COUNTRY,
+                WORLD_CITIES.LAT, 
+                WORLD_CITIES.LNG, 
+                WORLD_CITIES.POPULATION,
+                SUM(BIKE_SHARING_SYSTEMS.BICYCLES) AS TOTAL_BICYCLES
+            FROM WORLD_CITIES
+            INNER JOIN BIKE_SHARING_SYSTEMS ON WORLD_CITIES.CITY_ASCII = BIKE_SHARING_SYSTEMS.CITY
+            WHERE WORLD_CITIES.CITY_ASCII = 'Seoul';"
 
+sqlQuery(conn,query10)
+
+##task 11
+#Solution 11 join across the WORLD_CITIES and the BIKE_SHARING_SYSTEMS
+query11 <- "SELECT W.CITY, W.CITY_ASCII, W.COUNTRY, W.LAT, W.LNG, W.POPULATION 
+SUM(B.BICYCLES) AS TOTAL_BIKES
+FROM WORLD_CITIES W, BIKE_SHARING_SYSTEMS B
+WHERE B.CITY = W.CITY_ASCII
+AND TOTAL_BIKES BETWEEN 15000 AND 20000
+order by B.BICYCLES desc;"
+
+sqlQuery(conn,query11)
