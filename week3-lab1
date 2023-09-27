@@ -38,7 +38,7 @@ WORLD_CITIES <- sqlQuery(conn,
         cat ("Table was created successfully.\n")
     }
 
-
+##load data
 df4 <- read.csv("https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-RP0321EN-SkillsNetwork/labs/datasets/world_cities.csv",colClasses=c(date="character"))
 sqlSave(conn,df4, "WORLD_CITIES", append=TRUE, fast=FALSE, rownames=FALSE, colnames=FALSE, verbose=FALSE)
 WORLD_CITIES_db <- sqlFetch(conn, "WORLD_CITIES")
