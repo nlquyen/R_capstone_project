@@ -1,0 +1,46 @@
+# Task 5 the first and last dates in the Seoul Bike Sharing dataset
+date <- "SELECT MAX(DATE) AS LAST_DATE,
+            MIN(DATE) AS FIRST_DATE
+            FROM SEOUL_BIKE_SHARING;"
+
+sqlQuery(conn,date)
+
+##Task 5
+query5 <- "SELECT MAX(CAST(DATE AS DATE)) AS Last_Date, 
+MIN(CAST(DATE AS DATE)) AS first_date
+FROM SEOUL_BIKE_SHARING;"
+
+sqlQuery(conn,query5)
+
+##Task10
+#create table WORLD_CITIES
+WORLD_CITIES <- sqlQuery(conn, 
+                    "CREATE TABLE WORLD_CITIES (
+                                  CITY VARCHAR(20),
+                                  CITY_ASCII VARCHAR(20),
+                                  LAT INTEGER,
+                                  LNG INTEGER,
+                                  COUNTRY VARCHAR(20),
+                                  ISO2 VARCHAR(20),
+                                  ISO3 VARCHAR(20),
+                                  ADMIN_NAME VARCHAR(20),
+                                  CAPITAL VARCHAR(20),
+                                  POPULATION INTEGER,
+                                  ID INTEGER)", 
+    errors=FALSE
+                    )
+
+    if (WORLD_CITIES == -1){
+        cat ("An error has occurred.\n")
+        msg <- odbcGetErrMsg(conn)
+        print (msg)
+    } else {
+        cat ("Table was created successfully.\n")
+    }
+
+
+df4 <- read.csv("https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-RP0321EN-SkillsNetwork/labs/datasets/world_cities.csv",colClasses=c(date="character"))
+sqlSave(conn,df4, "WORLD_CITIES", append=TRUE, fast=FALSE, rownames=FALSE, colnames=FALSE, verbose=FALSE)
+WORLD_CITIES_db <- sqlFetch(conn, "WORLD_CITIES")
+
+
